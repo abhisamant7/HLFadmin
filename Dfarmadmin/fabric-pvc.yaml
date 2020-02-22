@@ -1,0 +1,26 @@
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: efs-volume-claim
+# spec:
+#   storageClassName: nfs
+#   accessModes:
+#     - ReadWriteMany
+#   resources:
+#     requests:
+#       storage: 5Gi
+#   selector:
+#     matchLabels:
+#     name: fabricadminfiles    
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: efs-volume-claim
+spec:
+  storageClassName: nfs
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi

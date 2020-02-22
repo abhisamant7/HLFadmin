@@ -1,0 +1,47 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: dfarmretail-ca
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: dfarmretail-ca
+    spec:
+      volumes:
+      - name: fabricfiles
+        persistentVolumeClaim:
+          claimName: efs-volume-claim
+
+      containers:
+      - name: dfarmretail-ca
+        image: hyperledger/fabric-ca:1.4.3
+        command: ["sh", "-c", "fabric-ca-server start -b admin:adminpw -d"]
+        env:  
+        - name: TZ
+          value: "America/ohio"
+        - name: FABRIC_CA_SERVER_HOME
+          value: /etc/hyperledger/fabric-ca-server
+        - name: FABRIC_CA_SERVER_CA_NAME
+          value: "dfarmretailCA"
+        - name: FABRIC_CA_SERVER_CA_CERTFILE
+          value: /fabric/crypto-config/peerOrganizations/dfarmretail/ca/ca.dfarmretail-cert.pem
+        - name: FABRIC_CA_SERVER_CA_KEYFILE
+          value: /fabric/crypto-config/peerOrganizations/dfarmretail/ca/key.pem
+        - name: FABRIC_CA_SERVER_DEBUG
+          value: "true"
+        - name: FABRIC_CA_SERVER_TLS_ENABLED
+          value: "true"
+        - name: FABRIC_CA_SERVER_TLS_CERTFILE
+          value: /fabric/crypto-config/peerOrganizations/dfarmretail/ca/ca.dfarmretail-cert.pem
+        - name: FABRIC_CA_SERVER_TLS_KEYFILE
+          value: /fabric/crypto-config/peerOrganizations/dfarmretail/ca/key.pem
+        - name: GODEBUG
+          value: "netdns=go"
+        volumeMounts:
+        - name: fabricfiles
+          mountPath: /fabric
+        # - mountPath: /fabric/crypto-config/peerOrganizations/dfarmretail/ca
+        #   name: fabricfiles
+          # subPath: /crypto-config/peerOrganizations/dfarmretail/ca

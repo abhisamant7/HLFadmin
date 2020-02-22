@@ -1,0 +1,200 @@
+{
+  "network-configs": {
+    "network-1": {
+      "version": "1.0",
+      "clients": {
+        "client-1": {
+          "tlsEnable": false,
+          "organization": "dfarmadminMSP",
+          "channel": "channel1",
+          "credentialStore": {
+            "path": "./tmp/credentialStore_dfarmadmin/credential",
+            "cryptoStore": {
+              "path": "./tmp/credentialStore_dfarmadmin/crypto"
+            }
+          }
+        }
+      },
+      "channels": {
+        "channel1": {
+          "peers": {
+            "blockchain-dfarmadminpeer1": {},
+            "blockchain-dfarmretailpeer1": {},
+            "blockchain-org3peer1": {},
+            "blockchain-org4peer1": {},
+            "blockchain-dfarmadminpeer2": {},
+            "blockchain-dfarmretailpeer2": {},
+            "blockchain-org3peer2": {},
+            "blockchain-org4peer2": {}
+          },
+          "orderers": {
+            "blockchain-orderer" : {}
+          },
+          "connection": {
+            "timeout": {
+              "peer": {
+                "endorser": "6000",
+                "eventHub": "6000",
+                "eventReg": "6000"
+              }
+            }
+          }
+        }
+      },
+      "organizations": {
+        "dfarmadminMSP": {
+          "mspid": "dfarmadminMSP",
+          "fullpath": false,
+          "adminPrivateKey": {
+            "path":
+              "/fabric/crypto-config/peerOrganizations/dfarmadmin.example.com/users/Admin@dfarmadmin.example.com/msp/keystore"
+          },
+          "signedCert": {
+            "path":
+              "/fabric/crypto-config/peerOrganizations/dfarmadmin.example.com/users/Admin@dfarmadmin.example.com/msp/signcerts"
+          }
+        },
+        "dfarmretailMSP": {
+          "mspid": "dfarmretailMSP",
+          "fullpath": false,
+          "adminPrivateKey": {
+            "path":
+              "/fabric/crypto-config/peerOrganizations/dfarmretail.example.com/users/Admin@dfarmretail.example.com/msp/keystore"
+          },
+          "signedCert": {
+            "path":
+              "/fabric/crypto-config/peerOrganizations/dfarmretail.example.com/users/Admin@dfarmretail.example.com/msp/signcerts"
+          }
+        },
+        "Org3MSP": {
+          "mspid": "Org3MSP",
+          "fullpath": false,
+          "adminPrivateKey": {
+            "path":
+              "/fabric/crypto-config/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp/keystore"
+          },
+          "signedCert": {
+            "path":
+              "/fabric/crypto-config/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp/signcerts"
+          }
+        },
+        "Org4MSP": {
+          "mspid": "Org4MSP",
+          "fullpath": false,
+          "adminPrivateKey": {
+            "path":
+              "/fabric/crypto-config/peerOrganizations/org4.example.com/users/Admin@org4.example.com/msp/keystore"
+          },
+          "signedCert": {
+            "path":
+              "/fabric/crypto-config/peerOrganizations/org4.example.com/users/Admin@org4.example.com/msp/signcerts"
+          }
+        },
+        "OrdererMSP": {
+          "mspid": "OrdererMSP",
+          "adminPrivateKey": {
+            "path":
+              "/fabric/crypto-config/ordererOrganizations/example.com/users/Admin@example.com/msp/keystore"
+          }
+        }
+      },
+      "peers": {
+        "blockchain-dfarmadminpeer1": {
+          "tlsCACerts": {
+            "path":
+              "/fabric/crypto-config/peerOrganizations/dfarmadmin.example.com/peers/peer0.dfarmadmin.example.com/tls/ca.crt"
+          },
+          "url": "grpc://blockchain-dfarmadminpeer1:30110",
+          "eventUrl": "grpc://blockchain-dfarmadminpeer1:30111",
+          "grpcOptions": {
+            "ssl-target-name-override": "peer0.dfarmadmin.example.com"
+          }
+        },
+        "blockchain-dfarmretailpeer1": {
+          "tlsCACerts": {
+            "path":
+              "/fabric/crypto-config/peerOrganizations/dfarmretail.example.com/peers/peer0.dfarmretail.example.com/tls/ca.crt"
+          },
+          "url": "grpc://blockchain-dfarmretailpeer1:30110",
+          "eventUrl": "grpc://blockchain-dfarmretailpeer1:30111",
+          "grpcOptions": {
+            "ssl-target-name-override": "peer0.dfarmretail.example.com"
+          }
+        },
+        "blockchain-org3peer1": {
+          "tlsCACerts": {
+            "path":
+              "/fabric/crypto-config/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls/ca.crt"
+          },
+          "url": "grpc://blockchain-org3peer1:30110",
+          "eventUrl": "grpc://blockchain-org3peer1:30111",
+          "grpcOptions": {
+            "ssl-target-name-override": "peer0.org3.example.com"
+          }
+        },
+        "blockchain-org4peer1": {
+          "tlsCACerts": {
+            "path":
+              "/fabric/crypto-config/peerOrganizations/org4.example.com/peers/peer0.org4.example.com/tls/ca.crt"
+          },
+          "url": "grpc://blockchain-org4peer1:30110",
+          "eventUrl": "grpc://blockchain-org4peer1:30111",
+          "grpcOptions": {
+            "ssl-target-name-override": "peer0.org4.example.com"
+          }
+        },
+        "blockchain-dfarmadminpeer2": {
+          "tlsCACerts": {
+            "path":
+              "/fabric/crypto-config/peerOrganizations/dfarmadmin.example.com/peers/peer1.dfarmadmin.example.com/tls/ca.crt"
+          },
+          "url": "grpc://blockchain-dfarmadminpeer2:30110",
+          "eventUrl": "grpc://blockchain-dfarmadminpeer2:30111",
+          "grpcOptions": {
+            "ssl-target-name-override": "peer1.dfarmadmin.example.com"
+          }
+        },
+        "blockchain-dfarmretailpeer2": {
+          "tlsCACerts": {
+            "path":
+              "/fabric/crypto-config/peerOrganizations/dfarmretail.example.com/peers/peer1.dfarmretail.example.com/tls/ca.crt"
+          },
+          "url": "grpc://blockchain-dfarmretailpeer2:30110",
+          "eventUrl": "grpc://blockchain-dfarmretailpeer2:30111",
+          "grpcOptions": {
+            "ssl-target-name-override": "peer1.dfarmretail.example.com"
+          }
+        },
+        "blockchain-org3peer2": {
+          "tlsCACerts": {
+            "path":
+              "/fabric/crypto-config/peerOrganizations/org3.example.com/peers/peer1.org3.example.com/tls/ca.crt"
+          },
+          "url": "grpc://blockchain-org3peer2:30110",
+          "eventUrl": "grpc://blockchain-org3peer2:30111",
+          "grpcOptions": {
+            "ssl-target-name-override": "peer1.org3.example.com"
+          }
+        },
+        "blockchain-org4peer2": {
+          "tlsCACerts": {
+            "path":
+              "/fabric/crypto-config/peerOrganizations/org4.example.com/peers/peer1.org4.example.com/tls/ca.crt"
+          },
+          "url": "grpc://blockchain-org4peer2:30110",
+          "eventUrl": "grpc://blockchain-org4peer2:30111",
+          "grpcOptions": {
+            "ssl-target-name-override": "peer1.org4.example.com"
+          }
+        }
+      },
+      "orderers": {
+        "blockchain-orderer": {
+          "url": "grpc://blockchain-orderer:31010"
+        }
+      }
+    }
+  },
+  "configtxgenToolPath": "/fabric-path/workspace/fabric-samples/bin",
+  "license": "Apache-2.0"
+}

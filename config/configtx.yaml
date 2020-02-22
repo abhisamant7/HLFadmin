@@ -1,0 +1,157 @@
+Organizations:
+    - &Dfarmadmin
+        Name: DfarmadminMSP
+        ID: DfarmadminMSP
+        MSPDir: /fabric/config/crypto-config/peerOrganizations/dfarmadmin.com/msp
+        Policies: &DfarmadminMSPPolicies
+            Readers:
+                Type: Signature
+                Rule: "OR('DfarmadminMSP.member')"
+            Writers:
+                Type: Signature
+                Rule: "OR('DfarmadminMSP.member')"
+            Admins:
+                Type: Signature
+                Rule: "OR('DfarmadminMSP.admin')"
+        AnchorPeers:
+            - Host: peer0.dfarmadmin.com
+              Port: 7051
+
+    - &Dfarmretail
+        Name: DfarmretailMSP
+        ID: DfarmretailMSP
+        MSPDir: /fabric/config/crypto-config/peerOrganizations/dfarmretail.com/msp
+        Policies: &DfarmretailMSPPolicies
+            Readers:
+                Type: Signature
+                Rule: "OR('DfarmretailMSP.member')"
+            Writers:
+                Type: Signature
+                Rule: "OR('DfarmretailMSP.member')"
+            Admins:
+                Type: Signature
+                Rule: "OR('DfarmretailMSP.admin')"
+        AnchorPeers:
+            - Host: peer0.dfarmretail.com
+              Port: 7051
+
+Capabilities:
+    Channel: &ChannelCapabilities
+        V1_4_3: true
+    Orderer: &OrdererCapabilities
+        V1_4_2: true
+    Application: &ApplicationCapabilities
+        V1_4_2: true
+        V1_3: false
+        V1_2: false
+        V1_1: false
+
+Application: &ApplicationDefaults
+    Organizations:
+    Policies: &ApplicationDefaultPolicies
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+    Capabilities:
+        <<: *ApplicationCapabilities
+
+Orderer: &OrdererDefaults
+    OrdererType: etcdraft
+    Addresses:
+        - orderer0.dfarmadmin.com:7050
+        - orderer1.dfarmadmin.com:7050
+        - orderer0.dfarmretail.com:7050
+        - orderer1.dfarmretail.com:7050
+    BatchTimeout: 2s
+    BatchSize:
+        MaxMessageCount: 500
+        AbsoluteMaxBytes: 10 MB
+        PreferredMaxBytes: 2 MB
+    MaxChannels: 0
+    Kafka:
+        Brokers:
+            - kafka0:9092
+            - kafka1:9092
+            - kafka2:9092
+    EtcdRaft:
+        Consenters:
+            - Host: orderer0.dfarmadmin.com
+              Port: 7050
+              ClientTLSCert: /fabric/config/crypto-config/peerOrganizations/dfarmadmin.com/peers/orderer0.dfarmadmin.com/tls/server.crt
+              ServerTLSCert: /fabric/config/crypto-config/peerOrganizations/dfarmadmin.com/peers/orderer0.dfarmadmin.com/tls/server.crt
+            - Host: orderer1.dfarmadmin.com
+              Port: 7050
+              ClientTLSCert: /fabric/config/crypto-config/peerOrganizations/dfarmadmin.com/peers/orderer1.dfarmadmin.com/tls/server.crt
+              ServerTLSCert: /fabric/config/crypto-config/peerOrganizations/dfarmadmin.com/peers/orderer1.dfarmadmin.com/tls/server.crt
+            - Host: orderer0.dfarmretail.com
+              Port: 7050
+              ClientTLSCert: /fabric/config/crypto-config/peerOrganizations/dfarmretail.com/peers/orderer0.dfarmretail.com/tls/server.crt
+              ServerTLSCert: /fabric/config/crypto-config/peerOrganizations/dfarmretail.com/peers/orderer0.dfarmretail.com/tls/server.crt
+            - Host: orderer1.dfarmretail.com
+              Port: 7050
+              ClientTLSCert: /fabric/config/crypto-config/peerOrganizations/dfarmretail.com/peers/orderer1.dfarmretail.com/tls/server.crt
+              ServerTLSCert: /fabric/config/crypto-config/peerOrganizations/dfarmretail.com/peers/orderer1.dfarmretail.com/tls/server.crt
+
+        Options:
+            TickInterval: 500ms
+            ElectionTick: 10
+            HeartbeatTick: 1
+            MaxInflightBlocks: 5
+            SnapshotIntervalSize: 20 MB
+    Organizations:
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+        BlockValidation:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+    Capabilities:
+        <<: *OrdererCapabilities
+Channel: &ChannelDefaults
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+    Capabilities:
+        <<: *ChannelCapabilities
+
+Profiles:
+    OrdererGenesis:
+        <<: *ChannelDefaults
+        Orderer:
+            <<: *OrdererDefaults
+            Organizations:
+                - *Dfarmadmin
+                - *Dfarmretail
+        Consortiums:
+            DfarmConsortium:
+                Organizations:
+                    - *Dfarmadmin
+                    - *Dfarmretail
+    dfarmchannel:
+        <<: *ChannelDefaults
+        Consortium: DfarmConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Dfarmadmin
+                - *Dfarmretail

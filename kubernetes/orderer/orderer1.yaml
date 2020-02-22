@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orderer1-deployment
+  labels: {
+    component: orderer1-service,
+    type: orderer
+  }
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: orderer1-service
+      type: orderer
+  template:
+    metadata:
+      labels:
+        component: orderer1-service
+        type: orderer
+    spec:
+      volumes:
+        - name: fabricfiles
+          persistentVolumeClaim:
+            claimName: efs-volume-claim
+      containers:
+        - name: orderer1-service
+          image: hyperledger/fabric-orderer:1.4.3
+          command: ["sh", "-c", "orderer"]
+          # workingDir: /var/hyperledger/orderer
+          ports:
+            - containerPort: 7050
+          env:   
+          - name: TZ
+            value: "America/ohio"        
+          - name: ORDERER_CFG_PATH
+            value: /fabric/
+          - name: CONFIGTX_ORDERER_ADDRESSES
+            value: "orderer1-service:7050"  
+          - name: ORDERER_GENERAL_LISTENADDRESS
+            value: "0.0.0.0"
+          - name: ORDERER_GENERAL_LISTENPORT
+            value: "7050"
+          - name: ORDERER_GENERAL_GENESISMETHOD
+            value: file
+          - name: ORDERER_GENERAL_GENESISPROFILE
+            value: OrdererGenesis
+          - name: FABRIC_LOGGING_SPEC
+            value: debug          
+          # - name: ORDERER_GENERAL_SYSTEMCHANNEL
+          #   value: syschannel
+          - name: ORDERER_GENERAL_GENESISFILE
+            value: /fabric/genesis.block
+          - name: ORDERER_GENERAL_LOCALMSPID
+            value: orderer
+          - name: ORDERER_GENERAL_LOCALMSPDIR
+            value: /fabric/crypto-config/ordererOrganizations/default.svc.cluster.local/orderers/orderer1.default.svc.cluster.local/msp
+          - name: ORDERER_GENERAL_TLS_ENABLED
+            value: "true"
+          - name: ORDERER_GENERAL_TLS_PRIVATEKEY
+            value: /fabric/crypto-config/ordererOrganizations/default.svc.cluster.local/orderers/orderer1.default.svc.cluster.local/tls/server.key
+          - name: ORDERER_GENERAL_TLS_CERTIFICATE
+            value: /fabric/crypto-config/ordererOrganizations/default.svc.cluster.local/orderers/orderer1.default.svc.cluster.local/tls/server.crt
+          - name: ORDERER_GENERAL_TLS_ROOTCAS
+            value: /fabric/crypto-config/ordererOrganizations/default.svc.cluster.local/orderers/orderer1.default.svc.cluster.local/tls/ca.crt
+          # - name: ORDERER_KAFKA_TOPIC_REPLICATIONFACOTR
+          #   value: "1"
+          # - name: ORDERER_KAFKA_VERBOSE
+          #   value: "true"
+          - name: ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY
+            value: /fabric/crypto-config/ordererOrganizations/default.svc.cluster.local/orderers/orderer1.default.svc.cluster.local/tls/server.key
+          - name: ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE
+            value: /fabric/crypto-config/ordererOrganizations/default.svc.cluster.local/orderers/orderer1.default.svc.cluster.local/tls/server.crt
+          - name: ORDERER_GENERAL_CLUSTER_ROOTCAS
+            value: /fabric/crypto-config/ordererOrganizations/default.svc.cluster.local/orderers/orderer1.default.svc.cluster.local/tls/ca.crt
+          volumeMounts:
+            - mountPath: /fabric
+              name: fabricfiles
+        

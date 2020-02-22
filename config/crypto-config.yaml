@@ -1,0 +1,54 @@
+# # ---------------------------------------------------------------------------
+# # "OrdererOrgs" - Definition of organizations managing orderer nodes
+# # ---------------------------------------------------------------------------
+# OrdererOrgs:
+#   # ---------------------------------------------------------------------------
+#   # Orderer
+#   # ---------------------------------------------------------------------------
+#   - Name: Orderer
+#     Domain: default.svc.cluster.local
+#     EnableNodeOUs: true
+#     # ---------------------------------------------------------------------------
+#     # "Specs" - See PeerOrgs below for complete description
+#     # ---------------------------------------------------------------------------
+#     Specs:
+#       - Hostname: orderer0
+#       - Hostname: orderer1
+
+# # ---------------------------------------------------------------------------
+# # "PeerOrgs" - Definition of organizations managing peer nodes
+# # ---------------------------------------------------------------------------
+# PeerOrgs:
+#   # ---------------------------------------------------------------------------
+#   # dfarmadmin
+#   # ---------------------------------------------------------------------------
+#   - Name: dfarmadmin
+#     Domain: dfarmadmin
+#     EnableNodeOUs: true
+  
+#     Template:
+#       Count: 2
+#     Users:
+#       Count: 1
+
+PeerOrgs:
+  - Name: Dfarmadmin
+    Domain: dfarmadmin.com
+    EnableNodeOUs: true
+    Specs:
+      - Hostname: orderer0
+      - Hostname: orderer1
+      - Hostname: peer0
+      - Hostname: peer1
+    Users:
+      Count: 0
+  - Name: Dfarmretail
+    Domain: dfarmretail.com
+    EnableNodeOUs: true
+    Specs:
+      - Hostname: orderer0
+      - Hostname: orderer1
+      - Hostname: peer0
+      - Hostname: peer1
+    Users:
+      Count: 0

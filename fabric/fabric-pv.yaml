@@ -1,0 +1,51 @@
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: fabric1-pv
+#   labels:
+#     type: local
+#     name: fabricfiles
+# spec:
+#   storageClassName: nfs
+#   capacity:
+#     storage: 100Gi
+#   volumeMode: Filesystem
+#   accessModes:
+#     - ReadWriteMany
+#   mountOptions:
+#     - hard
+#     - nfsvers=4.1
+#     - rsize=1048576
+#     - wsize=1048576
+#     - timeo=600
+#     - retrans=2  
+#   persistentVolumeReclaimPolicy: Retain
+#   nfs:
+#     path: /nfs/fabric
+#     server: fs-a0e7fcd9.efs.us-east-2.amazonaws.com
+
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: fabric-pv #fabric-pv
+  labels:
+    type: local
+    name: fabricfiles
+spec:
+  storageClassName: nfs
+  capacity:
+    storage: 100Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  mountOptions:
+    - hard
+    - nfsvers=4.1
+    - rsize=1048576
+    - wsize=1048576
+    - timeo=600
+    - retrans=2
+  nfs:
+    path: /
+    server: fs-09a3b870.efs.us-east-2.amazonaws.com
